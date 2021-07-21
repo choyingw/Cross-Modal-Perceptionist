@@ -19,4 +19,4 @@ Visual result 2: comparison of generation 3D face mesh with the baseline.
 <img src="demo/supervised_comp.png"> 
 
 **Updates:**
-We prepare to release codes on late Jun
+We prepare to release codes on Aug due to some schedule late
