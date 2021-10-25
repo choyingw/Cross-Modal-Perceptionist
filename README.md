@@ -3,7 +3,7 @@ Arxiv 2021 "Voice2Mesh: Cross-Modal 3D Face Model Generation from Voices"
 
 Cho-Ying Wu, Chin-Cheng Hsu, Ulrich Neumann, University of Southern California
 
-[<a href="https://choyingw.github.io/works/Voice2Mesh/index.html">Project page</a>]
+[<a href="https://arxiv.org/abs/2104.10299">Paper</a>] [<a href="https://choyingw.github.io/works/Voice2Mesh/index.html">Project page</a>]
 
 <img src="demo/overall_purpose.png">
 
