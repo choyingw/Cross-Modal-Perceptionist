@@ -1,4 +1,4 @@
-# Cross-Modal Perceptionist
+#  <div align="center">Cross-Modal Perceptionist</div>
 CVPR 2022 "Cross-Modal Perceptionist: Can Face Geometry be Gleaned from Voices?"
 
 Cho-Ying Wu, Chin-Cheng Hsu, Ulrich Neumann, University of Southern California
@@ -11,14 +11,14 @@ We study the cross-modal learning and analyze the correlation between voices and
 
 Comparison of recovered 3D face meshes with the baseline.
 
-<img src="demo/supervised_gt.png">
+<img src="demo/supervised_comp.png">
 
 
 Consistency for the same identity using different utterances.
 
 <img src="demo/coherence.png"> 
 
-**Demo codes**
+##  <div align="center">Demo</div>
 
 We test on Ubuntu 16.04 LTS, NVIDIA 2080 Ti (only GPU is supported), and use anaconda for installing packages
 
