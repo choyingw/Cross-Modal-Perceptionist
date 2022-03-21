@@ -9,11 +9,11 @@ Cho-Ying Wu, Chin-Cheng Hsu, Ulrich Neumann, University of Southern California
 
 We study the cross-modal learning and analyze the correlation between voices and 3D face geometry. Unlike previous methods for studying this correlation between voices and faces and only work on  the 2D domain, we choose 3D representation that can better validate the supportive evidence from the physiology of the correlation between voices and skeletal and articulator structures, which potentially affect facial geometry.
 
-Comparison of recovered 3D face meshes with the baseline.
+<ins>Comparison of recovered 3D face meshes with the baseline.</ins>
 
 <img src="demo/supervised_comp.png" style="width:70%;">
 
-Consistency for the same identity using different utterances.
+<ins>Consistency for the same identity using different utterances.</ins>
 
 <img src="demo/coherence.png" style="width:70%;"> 
 
@@ -24,7 +24,7 @@ We test on Ubuntu 16.04 LTS, NVIDIA 2080 Ti (only GPU is supported), and use ana
 Install packages
 
 1. `conda create --name CMP python=3.8`
-2. Install pytorch compatible to your computer, we test on pytorch v1.7.1 (should be compatible with other 1.0+ versions)
+2. Install PyTorch compatible to your computer, we test on PyTorch v1.9 (should be compatible with other 1.0+ versions)
 3. install other dependency: opencv-python, scipy, PIL, Cython
 
     Or use the environment.yml we provide instead: 
@@ -49,5 +49,16 @@ Run
 7. Results will be generated under `data/results/` (pre-generated references are under `data/results_reference`)
 
 More preprocessed MFCC and 3D mesh (3DMM params) pairs can be downloaded: [<a href="https://drive.google.com/drive/folders/1tT36oDujNXBw5SpwhY3PiBnGIE0FbvCs?usp=sharing">Voxceleb-3D Data</a>].
+
+##  <div align="center">Citation</div>
+If you find our work useful, please consider to cite us.
+
+    @inproceedings{wu2022cross,
+    title={Cross-Modal Perceptionist: Can Face Geometry be Gleaned from Voices?},
+    author={Wu, Cho-Ying and Hsu, Chin-Cheng and Neumann, Ulrich},
+    booktitle={CVPR},
+    year={2022}
+    }
+
 
 This project is developed on [<a href="https://github.com/choyingw/SynergyNet">SynergyNet</a>], [<a href="https://github.com/cleardusk/3DDFA_V2">3DDFA-V2</a>] and [<a href="https://github.com/cmu-mlsp/reconstructing_faces_from_voices">reconstruction-faces-from-voice</a>]
