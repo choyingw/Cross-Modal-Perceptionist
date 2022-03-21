@@ -3,7 +3,7 @@ CVPR 2022 "Cross-Modal Perceptionist: Can Face Geometry be Gleaned from Voices?"
 
 Cho-Ying Wu, Chin-Cheng Hsu, Ulrich Neumann, University of Southern California
 
-[<a href="">Paper (soon!)</a>] [<a href="https://choyingw.github.io/works/Voice2Mesh/index.html">Project page</a>] [<a href="">Data (soon!)</a>]
+[<a href="https://arxiv.org/abs/2203.09824">Paper</a>] [<a href="https://choyingw.github.io/works/Voice2Mesh/index.html">Project page</a>] [<a href="https://drive.google.com/drive/folders/1tT36oDujNXBw5SpwhY3PiBnGIE0FbvCs?usp=sharing">Voxceleb-3D Data</a>]
 
 <img src="demo/overall_purpose.png">
 
@@ -12,7 +12,6 @@ We study the cross-modal learning and analyze the correlation between voices and
 Comparison of recovered 3D face meshes with the baseline.
 
 <img src="demo/supervised_comp.png">
-
 
 Consistency for the same identity using different utterances.
 
@@ -49,5 +48,6 @@ Run
 6. `python demo.py` (This will fetch the preprocessed MFCC and use them as network inputs)
 7. Results will be generated under `data/results/` (pre-generated references are under `data/results_reference`)
 
+More preprocessed MFCC and 3D mesh (3DMM params) pairs can be downloaded: [<a href="https://drive.google.com/drive/folders/1tT36oDujNXBw5SpwhY3PiBnGIE0FbvCs?usp=sharing">Voxceleb-3D Data</a>].
 
 This project is developed on [<a href="https://github.com/choyingw/SynergyNet">SynergyNet</a>], [<a href="https://github.com/cleardusk/3DDFA_V2">3DDFA-V2</a>] and [<a href="https://github.com/cmu-mlsp/reconstructing_faces_from_voices">reconstruction-faces-from-voice</a>]
