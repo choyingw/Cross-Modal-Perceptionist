@@ -5,6 +5,12 @@ Cho-Ying Wu, Chin-Cheng Hsu, Ulrich Neumann, University of Southern California
 
 [<a href="https://arxiv.org/abs/2203.09824">Paper</a>] [<a href="https://choyingw.github.io/works/Voice2Mesh/index.html">Project page</a>] [<a href="https://drive.google.com/drive/folders/1tT36oDujNXBw5SpwhY3PiBnGIE0FbvCs?usp=sharing">Voxceleb-3D Data</a>]
 
+[TODO]: 
+1. Direct voice input demo
+2. Evaluation code
+3. Training code
+
+
 <img src="demo/overall_purpose.png" style="width:70%;">
 
 We study the cross-modal learning and analyze the correlation between voices and 3D face geometry. Unlike previous methods for studying this correlation between voices and faces and only work on  the 2D domain, we choose 3D representation that can better validate the supportive evidence from the physiology of the correlation between voices and skeletal and articulator structures, which potentially affect facial geometry.
