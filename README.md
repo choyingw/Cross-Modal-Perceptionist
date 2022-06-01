@@ -11,17 +11,17 @@ Cho-Ying Wu, Chin-Cheng Hsu, Ulrich Neumann, University of Southern California
 3. Training code
 
 
-<img src="demo/overall_purpose.png" style="width:70%;" align="center">
+<img src="demo/overall_purpose.png" style="width:70%;" align="centering">
 
 We study the cross-modal learning and analyze the correlation between voices and 3D face geometry. Unlike previous methods for studying this correlation between voices and faces and only work on  the 2D domain, we choose 3D representation that can better validate the supportive evidence from the physiology of the correlation between voices and skeletal and articulator structures, which potentially affect facial geometry.
 
 <ins>Comparison of recovered 3D face meshes with the baseline.</ins>
 
-<img src="demo/supervised_comp.png" style="width:70%;" align="center">
+<img src="demo/supervised_comp.png" style="width:70%;" align="centering">
 
 <ins>Consistency for the same identity using different utterances.</ins>
 
-<img src="demo/coherence.png" style="width:70%;" align="center"> 
+<img src="demo/coherence.png" style="width:70%;" align="centering"> 
 
 ##  <div align="center">Demo</div>
 
