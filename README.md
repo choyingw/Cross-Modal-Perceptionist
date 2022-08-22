@@ -28,7 +28,7 @@ We study the cross-modal learning and analyze the correlation between voices and
 <img src="demo/coherence.png" style="width:70%;" align="centering"> 
 </p>
     
-##  <div align="center">Demo</div>
+##  <div align="center">Demo: Preprocessed fbank</div>
 
 We test on Ubuntu 16.04 LTS, NVIDIA 2080 Ti (only GPU is supported), and use anaconda for installing packages
 
@@ -36,7 +36,7 @@ Install packages
 
 1. `conda create --name CMP python=3.8`
 2. Install PyTorch compatible to your computer, we test on PyTorch v1.9 (should be compatible with other 1.0+ versions)
-3. install other dependency: opencv-python, scipy, PIL, Cython
+3. install other dependency: opencv-python, scipy, PIL, Cython, pyaudio
 
     Or use the environment.yml we provide instead: 
     - `conda env create -f environment.yml`
@@ -52,14 +52,22 @@ Install packages
 
 Download pretrained models and 3DMM configuration data
 
-5. Download from [<a href="https://drive.google.com/file/d/1tqTSDrVVL3LkOWN-hduELm3YkWJ2ZUqu/view?usp=sharing">here</a>] (~160M) and unzip under the root folder
+5. Download from [<a href="https://drive.google.com/file/d/1tqTSDrVVL3LkOWN-hduELm3YkWJ2ZUqu/view?usp=sharing">here</a>] (~160M) and unzip under the root folder. This will create 'pretrained_models' and 'train.configs' under the root folder. 
 
-Run
+Read the preprocessed fbank for inference 
 
 6. `python demo.py` (This will fetch the preprocessed MFCC and use them as network inputs)
 7. Results will be generated under `data/results/` (pre-generated references are under `data/results_reference`)
 
 More preprocessed MFCC and 3D mesh (3DMM params) pairs can be downloaded: [<a href="https://drive.google.com/drive/folders/1tT36oDujNXBw5SpwhY3PiBnGIE0FbvCs?usp=sharing">Voxceleb-3D Data</a>].
+
+##  <div align="center">Demo: Use device mic input </div>
+
+1. Do the above 1-5 step. Plus, download the <a href="https://drive.google.com/file/d/1A9NKnlkvmcd8U17EuuI00YfPnPdjSsgM/view?usp=sharing">mean female</a> and <a href="https://drive.google.com/file/d/1UcW2HP5RsqPSRxel0vmE6Vzi4EFUXGSV/view?usp=sharing">mean male</a> mesh.
+
+2. `python demo_mic.py`
+
+3. Results will be generated under data/results
 
 ##  <div align="center">Citation</div>
 If you find our work useful, please consider to cite us.

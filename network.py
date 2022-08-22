@@ -99,13 +99,14 @@ def get_network(net_type, params, train=True):
         optimizer = None
     return net, optimizer
 
-# IGM module definition
-class IGM(nn.Module):
+# SynergyNet module definition
+class SynergyNet(nn.Module):
     '''Defintion of 2D-to-3D-part'''
-    def __init__(self, pretrained=False, load_path=None, last_CN=None):
-        super(IGM, self).__init__()
+    def __init__(self, pretrained=False, last_CN=None):
+        super(SynergyNet, self).__init__()
         self.backbone = getattr(mobilenetv2_backbone, 'mobilenet_v2')(last_CN=last_CN)
 
+        # load the pretained model for 2D-to-3D
         ckpt = torch.load('pretrained_models/2D-to-3D-pretrained.tar')['state_dict']
         model_dict = self.backbone.state_dict()
         for k,v in ckpt.items():
@@ -113,7 +114,7 @@ class IGM(nn.Module):
                 name_reduced = k.split('.',3)[-1]
                 model_dict[name_reduced] = v
 
-        if pretrained: # 3DDFA-V2 pretrain
+        if pretrained: # SynergyNet pretrain
             self.backbone.load_state_dict(model_dict)
         
         # 3DMM parameters and whitening parameters
@@ -139,6 +140,7 @@ class IGM(nn.Module):
         dense: if True, return dense vertex, else return 68 sparse landmarks.
         Working with batched tensors. Using Fortan-type reshape.
         '''
+        # 12 transformation + 40 shape + 10 expr + 40 (discarded) texture
         if whitening:
             if param.shape[1] == 102:
                 param_ = param * self.param_std + self.param_mean

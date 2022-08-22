@@ -154,10 +154,10 @@ def get_fbank(voice, mfc_obj):
     # Extract log mel-spectrogra
     fbank = mfc_obj.sig2logspec(voice).astype('float32')
 
-    print(fbank.shape)
-    m=fbank.mean(axis=0)
-    print(m.shape)
-    exit()
+    # print(fbank.shape)
+    # m=fbank.mean(axis=0)
+    # print(m.shape)
+    # exit()
 
     # Mean and variance normalization of each mel-frequency 
     fbank = fbank - fbank.mean(axis=0)
@@ -185,6 +185,7 @@ def voice2face(e_net, g_net, voice_file, vad_obj, mfc_obj, GPU=True):
     embedding = F.normalize(embedding)
     face = g_net(embedding)
     return face
+
 
 def voice2face_processed(e_net, g_net, fbank_obj, GPU=True, return_embeddings=False):
     fbank = np.load(fbank_obj)
@@ -235,6 +236,20 @@ def write_obj_with_colors(obj_name, vertices, triangles):
 			for i in range(triangles.shape[1]):
 				s = 'f {} {} {}\n'.format(triangles[0, i], triangles[1, i], triangles[2, i])
 				f.write(s)
+
+def read_obj(filename):
+    f = open(filename)
+    lines = f.readlines()
+    coll = []
+    for l in lines:
+        if l[0] != 'v':
+            break
+        comp = l.split()[1:]
+        comp = list(map(float, comp))
+        coll.append(comp)
+
+    a = np.asarray(coll)
+    return a
 
 def read_xyz(filename):
     f = open(filename)

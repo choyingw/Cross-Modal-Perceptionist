@@ -1,4 +1,4 @@
-# This script is for testing.
+# This script demos with pre-processed MFCC.
 import os
 import glob
 import torch
@@ -7,7 +7,7 @@ import numpy as np
 import cv2
 
 from config import NETWORKS_PARAMETERS
-from network import get_network, IGM
+from network import get_network, SynergyNet
 from utils import voice2face_processed
 from utilf.render import render_vert
 
@@ -15,13 +15,13 @@ from utilf.render import render_vert
 e_net, _ = get_network('e', NETWORKS_PARAMETERS, train=False)
 g_net, _ = get_network('g', NETWORKS_PARAMETERS, train=False)
 
-# building models: Voice2Mesh unsupervised
-image3D = IGM(pretrained=False, last_CN=None).cuda().eval()
+# building models: unsupervised
+image3D = SynergyNet(pretrained=False, last_CN=None).cuda().eval()
 backbone_ckpt = torch.load(NETWORKS_PARAMETERS['image3D']['model_path'])
 image3D.load_state_dict(backbone_ckpt)
 
-# 3DDFA-V2 pretrained network for getting pose
-image3D_pretrained = IGM(pretrained=True).cuda().eval()
+# SynergyNet pretrained network for getting pose
+image3D_pretrained = SynergyNet(pretrained=True).cuda().eval()
 
 # data and config
 voice_list = sorted(glob.glob('data/preprocessed_MFCC/*'))
@@ -48,17 +48,19 @@ for folder in voice_list:
         
         for fbank in all_fbanks:
             fbank_name = fbank.rsplit('/',1)[-1][:-4]
-            face_image = voice2face_processed(e_net, g_net, fbank,
-                                    NETWORKS_PARAMETERS['GPU'])               
-            face_image =  up_layer(face_image)
 
-            # Pose from 3DDFA-V2
-            pose = image3D_pretrained(face_image, return_onlypose=True)
-            R, off = image3D_pretrained.parse_param_102_pose(pose)            
+            with torch.no_grad():
+                # voice2face
+                face_image = voice2face_processed(e_net, g_net, fbank, NETWORKS_PARAMETERS['GPU'])               
+                face_image =  up_layer(face_image)
+
+                # Pose from 3DDFA-V2
+                pose = image3D_pretrained(face_image, return_onlypose=True)
+                R, off = image3D_pretrained.parse_param_102_pose(pose)            
             
-            #Alignment with synthesized image
-            prediction = image3D(face_image)
-            prediction = R @ prediction + off
+                #Alignment with synthesized image
+                prediction = image3D(face_image)
+                prediction = R @ prediction + off
 
             # transform to image coordinate space
             prediction[:, 1, :] = 127 - prediction[:, 1, :]
