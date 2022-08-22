@@ -62,7 +62,7 @@ More preprocessed MFCC and 3D mesh (3DMM params) pairs can be downloaded: [<a hr
 
 ##  <div align="center">Demo: Use device mic input </div>
 
-1. Do the above 1-5 step. Plus, download the <a href="https://drive.google.com/file/d/1A9NKnlkvmcd8U17EuuI00YfPnPdjSsgM/view?usp=sharing">mean female</a> and <a href="https://drive.google.com/file/d/1UcW2HP5RsqPSRxel0vmE6Vzi4EFUXGSV/view?usp=sharing">mean male</a> mesh.
+1. Do the above 1-5 step. Plus, download the <a href="https://drive.google.com/file/d/1pNx8wS5O9QA3nzaToYIKRuUovzFPKkZj/view?usp=sharing">face type meshes</a> and extract under ./face_types
 
 2. `python demo_mic.py` The demo will take 5 seconds recording from your device and predict the face mesh. 
 
