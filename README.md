@@ -6,7 +6,6 @@ Cho-Ying Wu, Chin-Cheng Hsu, Ulrich Neumann, University of Southern California
 [<a href="https://arxiv.org/abs/2203.09824">Paper</a>] [<a href="https://choyingw.github.io/works/Voice2Mesh/index.html">Project page</a>] [<a href="https://drive.google.com/drive/folders/1tT36oDujNXBw5SpwhY3PiBnGIE0FbvCs?usp=sharing">Voxceleb-3D Data</a>]
 
 [TODO]: 
-1. Direct voice input demo
 2. Evaluation code
 3. Training code
 
@@ -65,7 +64,9 @@ More preprocessed MFCC and 3D mesh (3DMM params) pairs can be downloaded: [<a hr
 
 1. Do the above 1-5 step. Plus, download the <a href="https://drive.google.com/file/d/1A9NKnlkvmcd8U17EuuI00YfPnPdjSsgM/view?usp=sharing">mean female</a> and <a href="https://drive.google.com/file/d/1UcW2HP5RsqPSRxel0vmE6Vzi4EFUXGSV/view?usp=sharing">mean male</a> mesh.
 
-2. `python demo_mic.py`
+2. `python demo_mic.py` The demo will take 5 seconds recording from your device and predict the face mesh. 
+
+We perform unsupervised gender classfication based on mean male and female shape and calculate the statistics between the predicted face and mean shape. Also we calculate the distance between the four types of faces (Regular, Slim, Skinny, Wide)and indicate which type the voice is closer to.
 
 3. Results will be generated under data/results
 

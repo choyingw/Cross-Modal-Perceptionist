@@ -94,10 +94,10 @@ def voice2face(e_net, g_net, voice_file, vad_obj, mfc_obj, GPU=True):
 def main():
     # recording and save under the root
     filename = "audio.wav"
-    stream_params = StreamParams()
-    recorder = Recorder(stream_params)
-    # record for 5 seconds
-    recorder.record(5, filename)
+    # stream_params = StreamParams()
+    # recorder = Recorder(stream_params)
+    # # record for 5 seconds
+    # recorder.record(5, filename)
 
     # initialization
     # voice activity detector, aggressiveness = 2
@@ -145,13 +145,70 @@ def main():
     mean_male = read_obj('male.obj') # 53215 * 3
     mean_female = read_obj('female.obj') # 53215 * 3
     N_vertices = prediction_fr_np.shape[0] #53215
-    error_male = (np.linalg.norm(prediction_fr_np - mean_male))/ N_vertices
+    error_male = np.linalg.norm(prediction_fr_np - mean_male)/ N_vertices
     error_female = np.linalg.norm(prediction_fr_np - mean_female)/ N_vertices
+    
+    pred_midD = np.linalg.norm(prediction_fr_np[2130]-prediction_fr_np[15003])
+    pred_foreD = np.linalg.norm(prediction_fr_np[1678]-prediction_fr_np[42117])
+    pred_cheekD = np.linalg.norm(prediction_fr_np[2294]-prediction_fr_np[13635])
+    pred_earD = np.linalg.norm(prediction_fr_np[20636]-prediction_fr_np[34153])
     print("-------------------------")
     if error_male < error_female:
         print("This is a male's voice")
+        print("Statistics from the predicted mesh and mean gender mesh")
+        target_foreD = np.linalg.norm(mean_male[1678]-mean_male[42117])
+        target_cheekD = np.linalg.norm(mean_male[2294]-mean_male[13635])
+        target_earD = np.linalg.norm(mean_male[20636]-mean_male[34153])
+        target_midD = np.linalg.norm(mean_male[2130]-mean_male[15003])
+
+        ratio_fore = (pred_foreD-target_foreD)/target_foreD
+        ratio_cheek = (pred_cheekD-target_cheekD)/target_cheekD
+        ratio_ear = (pred_earD-target_earD)/target_earD
+        ratio_mid = (pred_midD-target_midD)/target_midD
+
+        print(f"The forehead is {ratio_fore*100}% than the mean male shape")
+        print(f"The cheek-to-cheek is {ratio_cheek*100}% than the mean male shape")
+        print(f"The ear-to-ear is {ratio_ear*100}% than the mean male shape")
+        print(f"The midline is {ratio_mid*100}% than the mean male shape")
     else:
         print("This is a female's voice")
+        print("Statistics from the predicted mesh and mean gender mesh")
+        target_foreD = np.linalg.norm(mean_female[1678]-mean_female[42117])
+        target_cheekD = np.linalg.norm(mean_female[2294]-mean_female[13635])
+        target_earD = np.linalg.norm(mean_female[20636]-mean_female[34153])
+        target_midD = np.linalg.norm(mean_female[2130]-mean_female[15003])
+
+        ratio_fore = (pred_foreD-target_foreD)/target_foreD
+        ratio_cheek = (pred_cheekD-target_cheekD)/target_cheekD
+        ratio_ear = (pred_earD-target_earD)/target_earD
+        ratio_mid = (pred_midD-target_midD)/target_midD
+
+        print(f"The forehead is {ratio_fore*100}% than the mean female shape")
+        print(f"The cheek-to-cheek is {ratio_cheek*100}% than the femean male shape")
+        print(f"The ear-to-ear is {ratio_ear*100}% than the mean female shape")
+        print(f"The midline is {ratio_mid*100}% than the mean female shape")
+    print("-------------------------")
+
+    wide_shape = read_obj('wide.obj')
+    skinny_shape = read_obj('skinny.obj')
+    regular_shape = read_obj('regular.obj')
+    slim_shape = read_obj('slim.obj')
+    error_wide = np.linalg.norm(prediction_fr_np - wide_shape)/ N_vertices
+    error_skinny = np.linalg.norm(prediction_fr_np - skinny_shape)/ N_vertices
+    error_regular = np.linalg.norm(prediction_fr_np - regular_shape)/ N_vertices
+    error_slim = np.linalg.norm(prediction_fr_np - slim_shape)/ N_vertices
+    err_type = np.array([error_wide, error_skinny, error_regular, error_slim])
+    index = np.argsort(err_type)[0]
+
+    if index == 0:
+        print("The face shape is closer to WIDE")
+    elif index == 1:
+        print(f"The face shape is closer to SKINNY")
+    elif index == 2:
+        print(f"The face shape is closer to REGULAR")
+    elif index == 3:
+        print(f"The face shape is closer to SLIM")
+
     print("-------------------------")
 
     # transform to image coordinate space
