@@ -60,7 +60,7 @@ Read the preprocessed fbank for inference
 
 More preprocessed MFCC and 3D mesh (3DMM params) pairs can be downloaded: [<a href="https://drive.google.com/drive/folders/1tT36oDujNXBw5SpwhY3PiBnGIE0FbvCs?usp=sharing">Voxceleb-3D Data</a>].
 
-##  <div align="center">Demo: Use device mic input </div>
+##  <div align="center">Demo: Try it! Use device mic input </div>
 
 1. Do the above 1-5 step. Plus, download the <a href="https://drive.google.com/file/d/1pNx8wS5O9QA3nzaToYIKRuUovzFPKkZj/view?usp=sharing">face type meshes</a> and extract under ./face_types
 
@@ -69,6 +69,16 @@ More preprocessed MFCC and 3D mesh (3DMM params) pairs can be downloaded: [<a hr
 We perform unsupervised gender classfication based on mean male and female shape and calculate the statistics between the predicted face and mean shape. Also we calculate the distance between the four types of faces (Regular, Slim, Skinny, Wide)and indicate which type the voice is closer to.
 
 3. Results will be generated under data/results
+
+##  <div align="center">Evaluation </div>
+
+1. Download saved mesh for validation set (name starting from A-E in Voxceleb-3D). From supervised CMP: https://drive.google.com/file/d/1_xobyRM-abjfrvzjbF7uwMVPFPfeKZC9/view?usp=share_link; Voxceleb-3D validation set: https://drive.google.com/file/d/1NdkqlCPhl-mvPU9TYlPgHE_FaNJjAysf/view?usp=share_link. Put them under './data' and extract.
+
+The valiation set for each identity contains image (.jpg), mesh (.obj), pointcloud (.xyz), image overlapped with mesh (_b.jpg), 3DMM parameters (.npy) (199-dim for shape and 29-dim for expression. This is in contrast to simplified 3DMM basis for 40-dim shape and 10-dim expression. You can donwload full basis from BFM-2009 <a href="https://faces.dmi.unibas.ch/bfm/index.php?nav=1-1-0&id=details">official website</a>. Otherwise, we provided already reconstructed mesh in obj extension)
+
+2. bash cal_size.sh
+
+This will run and report ARE metrics and keypoint error metrics.
 
 ##  <div align="center">Citation</div>
 If you find our work useful, please consider to cite us.
