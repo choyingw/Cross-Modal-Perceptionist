@@ -5,11 +5,11 @@ Cho-Ying Wu, Chin-Cheng Hsu, Ulrich Neumann, University of Southern California
 
 [<a href="https://arxiv.org/abs/2203.09824">Paper</a>] [<a href="https://choyingw.github.io/works/Voice2Mesh/index.html">Project page</a>] [<a href="https://drive.google.com/drive/folders/1tT36oDujNXBw5SpwhY3PiBnGIE0FbvCs?usp=sharing">Voxceleb-3D Data</a>]
 
-Check the project page for the introduction of this cool work!
+<b>Check the project page for the introduction of this cool work!</b>
 
-<i>Update 2022/12/01</i>: Added Evaluation code, pretained model, and execution script for supervised framework. Organized data structure of Voxceleb-3D
+<i>Update: 2022/12/01</i> Added Evaluation code, pretained model, and execution script for supervised framework. Organized data structure of Voxceleb-3D
 
-Voxceleb-3D:
+<i>Voxceleb-3D</i>:
 
 (1) [<a href="https://drive.google.com/file/d/1xBjyP5BiwLL9LCETy0-UJt5oI4bROZVD/view?usp=share_link">Here</a>] contains data with names starting from F-Z as the <b>training set</b>. 100G zipped file, ~250G after unzip. This set contains pointcloud (.xyz), reconstructed mesh overlapped on images from VGGFace (_b.jpg), and 199-dim 3DMM parameters using BFM Face 2009 basis. This is in contrast to simplified 3DMM basis for 40-dim shape and 10-dim expression. You can donwload full basis from BFM-2009 <a href="https://faces.dmi.unibas.ch/bfm/index.php?nav=1-1-0&id=details">official website</a>. There are multiple 3D faces for an identity. 
 
