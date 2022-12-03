@@ -204,7 +204,7 @@ def voice2face_processed(e_net, g_net, fbank_obj, GPU=True, return_embeddings=Fa
     
     return face
 
-def voice2face_processed_3DMMOut(e_net, g_net, fbank_obj, GPU=True):
+def voice2face_processed_ParamOut(e_net, g_net, fbank_obj, GPU=True):
     fbank = np.load(fbank_obj)
     fbank = fbank.T[np.newaxis, ...]
     fbank = torch.from_numpy(fbank.astype('float32'))
@@ -217,6 +217,18 @@ def voice2face_processed_3DMMOut(e_net, g_net, fbank_obj, GPU=True):
     
     return face
 
+def voice2face_processed_MeshOut(e_net, g_net, fbank_obj, GPU=True):
+    fbank = np.load(fbank_obj)
+    fbank = fbank.T[np.newaxis, ...]
+    fbank = torch.from_numpy(fbank.astype('float32'))
+    
+    if GPU:
+        fbank = fbank.cuda()
+    embedding = e_net(fbank)
+    embedding = F.normalize(embedding)
+    face = g_net.forward_test(embedding)
+    
+    return face
 
 def write_obj_with_colors(obj_name, vertices, triangles):
 		"""

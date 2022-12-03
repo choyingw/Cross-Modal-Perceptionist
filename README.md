@@ -5,9 +5,19 @@ Cho-Ying Wu, Chin-Cheng Hsu, Ulrich Neumann, University of Southern California
 
 [<a href="https://arxiv.org/abs/2203.09824">Paper</a>] [<a href="https://choyingw.github.io/works/Voice2Mesh/index.html">Project page</a>] [<a href="https://drive.google.com/drive/folders/1tT36oDujNXBw5SpwhY3PiBnGIE0FbvCs?usp=sharing">Voxceleb-3D Data</a>]
 
-[TODO]: 
-2. Evaluation code
-3. Training code
+Voxceleb-3D:
+
+(1) [<a href="https://drive.google.com/file/d/1xBjyP5BiwLL9LCETy0-UJt5oI4bROZVD/view?usp=share_link">Here</a>] contains data with names starting from F-Z as the <b>training set</b>. 100G zipped file, ~250G after unzip. This set contains pointcloud (.xyz), reconstructed mesh overlapped on images from VGGFace (_b.jpg), and 199-dim 3DMM parameters using BFM Face 2009 basis. This is in contrast to simplified 3DMM basis for 40-dim shape and 10-dim expression. You can donwload full basis from BFM-2009 <a href="https://faces.dmi.unibas.ch/bfm/index.php?nav=1-1-0&id=details">official website</a>. There are multiple 3D faces for an identity. 
+
+(2) [<a href="https://drive.google.com/file/d/1xBjyP5BiwLL9LCETy0-UJt5oI4bROZVD/view?usp=share_link">Here</a>] contains data with names starting from A-E as the <b>validation set</b>. 300M. The format is the same except there is only one 3D face for an identity as groundtruth.
+
+(3) [<a href="https://drive.google.com/file/d/1jKOCjIsMlfPln8Vkpjx_wCRC20oVigxT/view?usp=share_link">Here</a>] contains images from VGGFace we used to reconstruct 3D faces for (1) and (2)
+
+(4) [<a href="https://drive.google.com/file/d/1Ac6b3oDB1Ot274u4CU-OaeSlUT5r6bZK/view?usp=share_link">Here</a>] contains preprocessed voice data (MFCC features) from Voxceleb for all the identities. 38G zipped file. Refer to this [<a href="https://drive.google.com/file/d/1h26fBbqeYwgjjwPOZrsshIL0xRcfM6eI/view?usp=share_link">]meta file</a>] to map id to name.
+
+(5) [<a href="https://drive.google.com/file/d/1CTDhjZfDOTyUyfknpGKkkz0xXc756Ua0/view?usp=share_link">Here</a>] contains preprocessed voice data (MFCC features) from Voxceleb for the testing subset (A-E). You can download it for inference purpose. See later section.
+
+[Update 2022/11/02]: Added Evaluation code and pretained model for supervised framework. Organized data structure of Voxceleb-3D
 
 <p align="center">
 <img src="demo/overall_purpose.png" style="width:70%;" align="centering">
@@ -51,14 +61,14 @@ Install packages
 
 Download pretrained models and 3DMM configuration data
 
-5. Download from [<a href="https://drive.google.com/file/d/1tqTSDrVVL3LkOWN-hduELm3YkWJ2ZUqu/view?usp=sharing">here</a>] (~160M) and unzip under the root folder. This will create 'pretrained_models' and 'train.configs' under the root folder. 
+5. Download from [<a href="https://drive.google.com/file/d/1tqTSDrVVL3LkOWN-hduELm3YkWJ2ZUqu/view?usp=sharing">here</a>] (~160M) and unzip under the root folder. This will create 'pretrained_models' (trained by unsupervised CMP) and 'train.configs' (3DMM config data) under the root folder. 
 
 Read the preprocessed fbank for inference 
 
 6. `python demo.py` (This will fetch the preprocessed MFCC and use them as network inputs)
 7. Results will be generated under `data/results/` (pre-generated references are under `data/results_reference`)
 
-More preprocessed MFCC and 3D mesh (3DMM params) pairs can be downloaded: [<a href="https://drive.google.com/drive/folders/1tT36oDujNXBw5SpwhY3PiBnGIE0FbvCs?usp=sharing">Voxceleb-3D Data</a>].
+More preprocessed MFCC and 3D mesh (3DMM params) pairs can be downloaded: [<a href="https://drive.google.com/drive/folders/1tT36oDujNXBw5SpwhY3PiBnGIE0FbvCs?usp=sharing">Voxceleb-3D Data</a>] (about 100G). 
 
 ##  <div align="center">Demo: Try it! Use device mic input </div>
 
@@ -70,13 +80,30 @@ We perform unsupervised gender classfication based on mean male and female shape
 
 3. Results will be generated under data/results
 
+##  <div align="center">Inference from supervised framework </div>
+
+1. Do the 1-5 step in Demo. Download pretrained supervised model [<a href="https://drive.google.com/file/d/1dWDwtLpt7wW7VNCJCUKscUEP-mIkRpPo/view?usp=share_link">here</a>]. Download voice data (A-E) for inference [<a href="https://drive.google.com/file/d/1CTDhjZfDOTyUyfknpGKkkz0xXc756Ua0/view?usp=share_link">here</a>] and [<a href="https://drive.google.com/file/d/1h26fBbqeYwgjjwPOZrsshIL0xRcfM6eI/view?usp=share_link">]meta file</a>]. Put the pretrained model under './pretrained_models/supervised_64'. Put the vocie data and meta file under './data'
+
+2. Edit config.py Line 6: change to 'pretrained_models/supervised_64'
+
+3. 
+    ```
+    python eval_sup.py
+    ```
+This will save all the mesh obj files under './data/supervised_output/'
+
 ##  <div align="center">Evaluation </div>
 
-1. Download saved mesh for validation set (name starting from A-E in Voxceleb-3D). From supervised CMP: https://drive.google.com/file/d/1_xobyRM-abjfrvzjbF7uwMVPFPfeKZC9/view?usp=share_link; Voxceleb-3D validation set: https://drive.google.com/file/d/1NdkqlCPhl-mvPU9TYlPgHE_FaNJjAysf/view?usp=share_link. Put them under './data' and extract.
+1. Do the 1-5 step in Demo. Download generated and saved mesh for validation set (name starting from A-E in Voxceleb-3D). From supervised CMP: https://drive.google.com/file/d/1_xobyRM-abjfrvzjbF7uwMVPFPfeKZC9/view?usp=share_link; 
+
+Voxceleb-3D validation set: https://drive.google.com/file/d/1NdkqlCPhl-mvPU9TYlPgHE_FaNJjAysf/view?usp=share_link. Put them under './data' and extract.
 
 The valiation set for each identity contains image (.jpg), mesh (.obj), pointcloud (.xyz), image overlapped with mesh (_b.jpg), 3DMM parameters (.npy) (199-dim for shape and 29-dim for expression. This is in contrast to simplified 3DMM basis for 40-dim shape and 10-dim expression. You can donwload full basis from BFM-2009 <a href="https://faces.dmi.unibas.ch/bfm/index.php?nav=1-1-0&id=details">official website</a>. Otherwise, we provided already reconstructed mesh in obj extension)
 
-2. bash cal_size.sh
+2. 
+    ```
+    bash cal_size.sh
+    ```
 
 This will run and report ARE metrics and keypoint error metrics.
 

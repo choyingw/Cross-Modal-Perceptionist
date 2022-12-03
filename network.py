@@ -178,3 +178,77 @@ class SynergyNet(nn.Module):
         '''Convert P to R and s as in 3DDFA-V2'''
         s = (R[:, 0, :3].norm(dim=1) + R[:, 1, :3].norm(dim=1))/2.0
         return F.normalize(R, p=2, dim=2), s
+
+class Generator1D_directMLP(nn.Module):
+    def __init__(self):
+        super(Generator1D_directMLP, self).__init__()
+
+        # building classifier
+        self.num_scale = 1
+        self.num_shape = 40
+        self.num_exp = 10
+        self.last_channel = 64
+
+        self.classifier_scale = nn.Sequential(
+            nn.Dropout(0.2),
+            nn.Linear(self.last_channel, self.num_scale),
+        )
+        self.classifier_shape = nn.Sequential(
+            nn.Dropout(0.2),
+            nn.Linear(self.last_channel, self.num_shape),
+        )
+        self.classifier_exp = nn.Sequential(
+            nn.Dropout(0.2),
+            nn.Linear(self.last_channel, self.num_exp),
+        )
+
+        ckpt = torch.load('models/2D-to-3D-pretrained.tar')['state_dict']
+        print('Loading whitening parameters from: models/2D-to-3D-pretrained.tar')
+        self.param_std = ckpt['module.param_std']
+        self.param_mean = ckpt['module.param_mean']
+        self.w_shp = ckpt['module.w_shp']
+        self.w_exp = ckpt['module.w_exp']
+        self.u = ckpt['module.u'].unsqueeze(0)
+
+    def forward_test(self, x):
+        """return mesh
+        """
+        x = x.reshape(x.shape[0], -1)
+        x_scale = self.classifier_scale(x)
+        x_shape = self.classifier_shape(x)
+        x_exp = self.classifier_exp(x)
+        _3D_attr = torch.cat((x_scale, x_shape, x_exp), dim=1)
+        _3D_face = self.reconstruct_vertex_51_onlyDeform(_3D_attr, dense=True)
+        return _3D_face
+
+    def forward_test_param(self, x):
+        """return 3dmm parameters
+        """
+        x = x.reshape(x.shape[0], -1)
+        x_scale = self.classifier_scale(x)
+        x_shape = self.classifier_shape(x)
+        x_exp = self.classifier_exp(x)
+        _3D_attr = torch.cat((x_scale, x_shape, x_exp), dim=1)
+        return _3D_attr
+
+    def reconstruct_vertex_51_onlyDeform(self, param, whitening=True, dense=False):
+        """51 = 1 (scale) + 40 (shape) + 10 (expr)
+        """
+        if whitening:
+            if param.shape[1] == 51: # manually mine out whitening params for scale
+                s = (param[:, 0]*1.538597731841497e-05) + 0.0005920184194110334
+                param_ = param[:, 1:] * self.param_std[12:62] + self.param_mean[12:62]
+            else:
+                raise RuntimeError('length of params mismatch')
+        alpha_shp, alpha_exp = self.parse_param_50(param_)
+        if dense:
+            # since we are predicting 3D face from speech
+            # only use scale, do not use rotation nor translation
+            vertex = s.unsqueeze(1).unsqueeze(1)*(self.u + self.w_shp @ alpha_shp + self.w_exp @ alpha_exp).squeeze().contiguous().view(-1, 53215, 3).transpose(1,2)
+        return vertex
+    
+    def parse_param_50(self, param):
+        """Work for only tensor"""
+        alpha_shp = param[:, :40].reshape(-1, 40, 1)
+        alpha_exp = param[:, 40:50].reshape(-1, 10, 1)
+        return alpha_shp, alpha_exp
