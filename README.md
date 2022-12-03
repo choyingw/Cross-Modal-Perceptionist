@@ -1,5 +1,5 @@
 #  <div align="center">Cross-Modal Perceptionist</div>
-COde Repository for CVPR 2022 "Cross-Modal Perceptionist: Can Face Geometry be Gleaned from Voices?"
+Code Repository for CVPR 2022 "Cross-Modal Perceptionist: Can Face Geometry be Gleaned from Voices?"
 
 Cho-Ying Wu, Chin-Cheng Hsu, Ulrich Neumann, University of Southern California
 
