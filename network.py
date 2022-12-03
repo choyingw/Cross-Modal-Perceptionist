@@ -202,7 +202,7 @@ class Generator1D_directMLP(nn.Module):
             nn.Linear(self.last_channel, self.num_exp),
         )
 
-        ckpt = torch.load('models/2D-to-3D-pretrained.tar')['state_dict']
+        ckpt = torch.load('pretrained_models/2D-to-3D-pretrained.tar')['state_dict']
         print('Loading whitening parameters from: models/2D-to-3D-pretrained.tar')
         self.param_std = ckpt['module.param_std']
         self.param_mean = ckpt['module.param_mean']

@@ -25,7 +25,6 @@ g_net.load_state_dict(g_net_ckpt)
 
 # test
 voice_list = sorted(glob.glob('data/fbank/*'))
-up_layer = torch.nn.Upsample((120,120), mode='bilinear', align_corners=True)
 tri = sio.loadmat('./train.configs/tri.mat')['tri']
 
 id_name = {}
@@ -34,10 +33,10 @@ rows=csv.reader(csv_file, delimiter='	')
 headers = next(rows)
 for row in rows:
     id_name.update({row[0]:row[1]})
-available_GT = list(map(lambda k: k.rsplit('/',1)[-1], sorted(glob.glob('A2E_val/*'))))
+available_GT = list(map(lambda k: k.rsplit('/',1)[-1], sorted(glob.glob('data/A2E_val/*'))))
 
 # [TODO] Change this variable to yout result output folder
-FOLDER_ROOT = 'data/supervised_output/'
+FOLDER_ROOT = 'supervised_output/'
 
 if not os.path.exists(FOLDER_ROOT):
     os.mkdir(FOLDER_ROOT)
@@ -58,10 +57,12 @@ for folder in voice_list:
     all_sequences = sorted(glob.glob(folder+'/*'))
     
     for sequence in all_sequences:
+        print(sequence)
         all_fbanks = sorted(glob.glob(sequence+'/*.npy'))
         sequence_name = sequence.rsplit('/',1)[-1]
         
         for fbank in all_fbanks:
+            print(fbank)
             fbank_name = fbank.rsplit('/',1)[-1][:-4]
             prediction = voice2face_processed_MeshOut(e_net, g_net, fbank,NETWORKS_PARAMETERS['GPU']).squeeze().detach().cpu()
             save_name = FOLDER_ROOT+ corr_name + '/' + sequence_name + '_' + fbank_name

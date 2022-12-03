@@ -4,7 +4,7 @@ from utils import get_collate_fn
 import os
 
 SAVE_DIR = 'pretrained_models/'
-NUM_EPOCH = 49999
+NUM_EPOCH = 48000 #49999
 
 if not os.path.exists(SAVE_DIR):
     os.makedirs(SAVE_DIR)

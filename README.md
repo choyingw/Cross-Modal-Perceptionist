@@ -1,9 +1,13 @@
 #  <div align="center">Cross-Modal Perceptionist</div>
-CVPR 2022 "Cross-Modal Perceptionist: Can Face Geometry be Gleaned from Voices?"
+COde Repository for CVPR 2022 "Cross-Modal Perceptionist: Can Face Geometry be Gleaned from Voices?"
 
 Cho-Ying Wu, Chin-Cheng Hsu, Ulrich Neumann, University of Southern California
 
 [<a href="https://arxiv.org/abs/2203.09824">Paper</a>] [<a href="https://choyingw.github.io/works/Voice2Mesh/index.html">Project page</a>] [<a href="https://drive.google.com/drive/folders/1tT36oDujNXBw5SpwhY3PiBnGIE0FbvCs?usp=sharing">Voxceleb-3D Data</a>]
+
+Check the project page for the introduction of this cool work!
+
+<i>Update 2022/12/01</i>: Added Evaluation code, pretained model, and execution script for supervised framework. Organized data structure of Voxceleb-3D
 
 Voxceleb-3D:
 
@@ -13,11 +17,11 @@ Voxceleb-3D:
 
 (3) [<a href="https://drive.google.com/file/d/1jKOCjIsMlfPln8Vkpjx_wCRC20oVigxT/view?usp=share_link">Here</a>] contains images from VGGFace we used to reconstruct 3D faces for (1) and (2)
 
-(4) [<a href="https://drive.google.com/file/d/1Ac6b3oDB1Ot274u4CU-OaeSlUT5r6bZK/view?usp=share_link">Here</a>] contains preprocessed voice data (MFCC features) from Voxceleb for all the identities. 38G zipped file. Refer to this [<a href="https://drive.google.com/file/d/1h26fBbqeYwgjjwPOZrsshIL0xRcfM6eI/view?usp=share_link">]meta file</a>] to map id to name.
+(4) [<a href="https://drive.google.com/file/d/1Ac6b3oDB1Ot274u4CU-OaeSlUT5r6bZK/view?usp=share_link">Here</a>] contains preprocessed voice data (MFCC features) from Voxceleb for all the identities. 38G zipped file. Refer to this [<a href="https://drive.google.com/file/d/1h26fBbqeYwgjjwPOZrsshIL0xRcfM6eI/view?usp=share_link">meta file</a>] to map id to name.
 
 (5) [<a href="https://drive.google.com/file/d/1CTDhjZfDOTyUyfknpGKkkz0xXc756Ua0/view?usp=share_link">Here</a>] contains preprocessed voice data (MFCC features) from Voxceleb for the testing subset (A-E). You can download it for inference purpose. See later section.
 
-[Update 2022/11/02]: Added Evaluation code and pretained model for supervised framework. Organized data structure of Voxceleb-3D
+
 
 <p align="center">
 <img src="demo/overall_purpose.png" style="width:70%;" align="centering">
@@ -70,7 +74,7 @@ Read the preprocessed fbank for inference
 
 More preprocessed MFCC and 3D mesh (3DMM params) pairs can be downloaded: [<a href="https://drive.google.com/drive/folders/1tT36oDujNXBw5SpwhY3PiBnGIE0FbvCs?usp=sharing">Voxceleb-3D Data</a>] (about 100G). 
 
-##  <div align="center">Demo: Try it! Use device mic input </div>
+##  <div align="center">Demo: :laughing: Try it! Use device mic input </div>
 
 1. Do the above 1-5 step. Plus, download the <a href="https://drive.google.com/file/d/1pNx8wS5O9QA3nzaToYIKRuUovzFPKkZj/view?usp=sharing">face type meshes</a> and extract under ./face_types
 
@@ -82,7 +86,8 @@ We perform unsupervised gender classfication based on mean male and female shape
 
 ##  <div align="center">Inference from supervised framework </div>
 
-1. Do the 1-5 step in Demo. Download pretrained supervised model [<a href="https://drive.google.com/file/d/1dWDwtLpt7wW7VNCJCUKscUEP-mIkRpPo/view?usp=share_link">here</a>]. Download voice data (A-E) for inference [<a href="https://drive.google.com/file/d/1CTDhjZfDOTyUyfknpGKkkz0xXc756Ua0/view?usp=share_link">here</a>] and [<a href="https://drive.google.com/file/d/1h26fBbqeYwgjjwPOZrsshIL0xRcfM6eI/view?usp=share_link">]meta file</a>]. Put the pretrained model under './pretrained_models/supervised_64'. Put the vocie data and meta file under './data'
+1. Do the 1-5 step in Demo. Download pretrained supervised model [<a href="https://drive.google.com/file/d/1dWDwtLpt7wW7VNCJCUKscUEP-mIkRpPo/view?usp=share_link">here</a>]. Download voice data (A-E) for inference [<a href="https://drive.google.com/file/d/1CTDhjZfDOTyUyfknpGKkkz0xXc756Ua0/view?usp=share_link">here</a>], [<a href="https://drive.google.com/file/d/1h26fBbqeYwgjjwPOZrsshIL0xRcfM6eI/view?usp=share_link">meta file</a>], and [<a href="https://drive.google.com/file/d/1NdkqlCPhl-mvPU9TYlPgHE_FaNJjAysf/view?usp=share_link">groundtruth</a>]. Put the pretrained model under './pretrained_models/supervised_64'. Put the vocie data and meta file under './data'. Put the groundtruth under './data' and extract.
+
 
 2. Edit config.py Line 6: change to 'pretrained_models/supervised_64'
 
@@ -90,13 +95,14 @@ We perform unsupervised gender classfication based on mean male and female shape
     ```
     python eval_sup.py
     ```
-This will save all the mesh obj files under './data/supervised_output/'
+
+This will match identity from voiceID and available 3D faces reconstructed from VGGFace via the meta file. Only predict 3D faces for those matched ID. Then it will save all the mesh obj files under './data/supervised_output/'
 
 ##  <div align="center">Evaluation </div>
 
 1. Do the 1-5 step in Demo. Download generated and saved mesh for validation set (name starting from A-E in Voxceleb-3D). From supervised CMP: https://drive.google.com/file/d/1_xobyRM-abjfrvzjbF7uwMVPFPfeKZC9/view?usp=share_link; 
 
-Voxceleb-3D validation set: https://drive.google.com/file/d/1NdkqlCPhl-mvPU9TYlPgHE_FaNJjAysf/view?usp=share_link. Put them under './data' and extract.
+(The same as groundtruth in the supervised inference) Voxceleb-3D validation set: https://drive.google.com/file/d/1NdkqlCPhl-mvPU9TYlPgHE_FaNJjAysf/view?usp=share_link. Put them under './data' and extract.
 
 The valiation set for each identity contains image (.jpg), mesh (.obj), pointcloud (.xyz), image overlapped with mesh (_b.jpg), 3DMM parameters (.npy) (199-dim for shape and 29-dim for expression. This is in contrast to simplified 3DMM basis for 40-dim shape and 10-dim expression. You can donwload full basis from BFM-2009 <a href="https://faces.dmi.unibas.ch/bfm/index.php?nav=1-1-0&id=details">official website</a>. Otherwise, we provided already reconstructed mesh in obj extension)
 
