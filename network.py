@@ -124,14 +124,16 @@ class SynergyNet(nn.Module):
         self.w_exp = ckpt['module.w_exp']
         self.u = ckpt['module.u'].unsqueeze(0)
 
-    def forward(self, input, return_onlypose=False):
-        _3D_attr = self.backbone(input)
+    def forward(self, input, return_onlypose=False, return_interFeature=False):
+        _3D_attr, pool_x, inter = self.backbone(input)
         if return_onlypose:
             # only return pose 
             return _3D_attr[:,:12] * self.param_std[:12] + self.param_mean[:12]
         else:
             # return dense mesh face
             _3D_face = self.reconstruct_vertex(_3D_attr, dense=True)
+            if return_interFeature:
+                return _3D_face, pool_x, inter
             return _3D_face
 
     def reconstruct_vertex(self, param, whitening=True, dense=False):

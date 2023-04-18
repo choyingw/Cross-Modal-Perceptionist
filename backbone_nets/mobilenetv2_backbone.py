@@ -202,18 +202,20 @@ class MobileNetV2(nn.Module):
     def _forward_impl(self, x):
         # This exists since TorchScript doesn't support inheritance, so the superclass method
         # (this one) needs to have a name other than `forward` that can be accessed in a subclass
-        x = self.features(x)
+        inter = self.features_first(x)
+        x = self.features_second(inter)
 
         x = nn.functional.adaptive_avg_pool2d(x, 1)
         x = x.reshape(x.shape[0], -1)
 
+        pool_x = x.clone()
         x_ori = self.classifier_ori(x)
         x_shape = self.classifier_shape(x)
         x_exp = self.classifier_exp(x)
         x_tex = self.classifier_texture(x)
         x = torch.cat((x_ori, x_shape, x_exp, x_tex), dim=1)
         
-        return x
+        return x, pool_x, inter
 
     def forward(self, x):
         return self._forward_impl(x)

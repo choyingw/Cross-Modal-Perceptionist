@@ -9,6 +9,7 @@ import os.path as osp
 from PIL import Image
 from scipy.io import wavfile
 from torch.utils.data.dataloader import default_collate
+from vad import read_wave, write_wave, frame_generator, vad_collector
 
 def make_abs_path(d):
     return osp.join(osp.dirname(osp.realpath(__file__)), d)
@@ -112,10 +113,25 @@ def get_collate_fn(nframe_range):
         return default_collate(batch)
     return collate_fn
 
+def get_collate_fn_4(nframe_range):
+    def collate_fn(batch):
+        min_nframe, max_nframe = nframe_range
+        assert min_nframe <= max_nframe
+        num_frame = np.random.randint(min_nframe, max_nframe+1)
+        pt = np.random.randint(0, max_nframe-num_frame+1)
+        batch = [(item[0][..., pt:pt+num_frame], item[1], item[2][..., pt:pt+num_frame], item[3][..., pt:pt+num_frame]) for item in batch]
+        return default_collate(batch)
+    return collate_fn
+
 def cycle(dataloader):
     while True:
         for data, label in dataloader:
             yield data, label
+
+def cycle_4(dataloader):
+    while True:
+        for data, label, data_p, data_n in dataloader:
+            yield data, label, data_p, data_n
 
 def save_model(net, model_path):
     model_dir = os.path.dirname(model_path)

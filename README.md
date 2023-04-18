@@ -13,7 +13,7 @@ Cho-Ying Wu, Chin-Cheng Hsu, Ulrich Neumann, University of Southern California
 
 (1) [<a href="https://drive.google.com/file/d/1xBjyP5BiwLL9LCETy0-UJt5oI4bROZVD/view?usp=share_link">Here</a>] contains data with names starting from F-Z as the <b>training set</b>. 100G zipped file, ~250G after unzip. This set contains pointcloud (.xyz), reconstructed mesh overlapped on images from VGGFace (_b.jpg), and 199-dim 3DMM parameters using BFM Face 2009 basis. This is in contrast to simplified 3DMM basis for 40-dim shape and 10-dim expression. You can donwload full basis from BFM-2009 <a href="https://faces.dmi.unibas.ch/bfm/index.php?nav=1-1-0&id=details">official website</a>. There are multiple 3D faces for an identity. 
 
-(2) [<a href="https://drive.google.com/file/d/1xBjyP5BiwLL9LCETy0-UJt5oI4bROZVD/view?usp=share_link">Here</a>] contains data with names starting from A-E as the <b>validation set</b>. 300M. The format is the same except there is only one 3D face for an identity as groundtruth.
+(2) [<a href="https://drive.google.com/file/d/1BzuNOYN_8USpp6r8uPxpSezD5GOhf1XI/view?usp=share_link">Here</a>] contains data with names starting from A-E as the <b>validation set</b>. 300M. The format is the same except there is only one 3D face for an identity as groundtruth.
 
 (3) [<a href="https://drive.google.com/file/d/1jKOCjIsMlfPln8Vkpjx_wCRC20oVigxT/view?usp=share_link">Here</a>] contains images from VGGFace we used to reconstruct 3D faces for (1) and (2)
 
@@ -112,6 +112,16 @@ The valiation set for each identity contains image (.jpg), mesh (.obj), pointclo
     ```
 
 This will run and report ARE metrics and keypoint error metrics.
+
+##  <div align="center">Training </div>
+
+1. Train the unsupervised framework
+
+-- Download 'Voxceleb-3D' data (2), (3), and (4). They are validation set, training images, and training voice banks. Extract and put them under './data'
+
+-- Download a much smaller set <a href="https://drive.google.com/file/d/1TkGCd2aACqUXVYsELnd6JTPM6ErRveQC/view?usp=sharing">[here]</a> for fast online validation
+
+-- python gan_train_cascade.py
 
 ##  <div align="center">Citation</div>
 If you find our work useful, please consider to cite us.
